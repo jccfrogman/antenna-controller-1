@@ -6,6 +6,7 @@ Simple command-line interface for testing antenna control system
 
 import sys
 import signal
+import argparse
 from antenna_hardware import AntennaHardware
 from ssh_command_handler import SSHCommandHandler
 from button_handler import ButtonHandler
@@ -19,14 +20,19 @@ Device.pin_factory = LGPIOFactory()
 class AntennaControllerCLI:
     """Interactive CLI for antenna control"""
     
-    def __init__(self):
-        """Initialize hardware and handlers"""
+    def __init__(self, antenna_count=3):
+        """Initialize hardware and handlers
+        
+        Args:
+            antenna_count (int): Number of antennas to cycle through (2 or 3)
+        """
+        self.antenna_count = antenna_count
         print("Initializing Antenna Controller...")
         
         try:
             self.hw = AntennaHardware()
             self.ssh_handler = SSHCommandHandler(self.hw)
-            self.button_handler = ButtonHandler(self.hw)
+            self.button_handler = ButtonHandler(self.hw, antenna_count=antenna_count)
             
             # Setup signal handler for clean shutdown
             signal.signal(signal.SIGINT, self._signal_handler)
@@ -57,8 +63,7 @@ class AntennaControllerCLI:
         """Print welcome banner"""
         print("=" * 60)
         print("    ANTENNA CONTROLLER - Interactive CLI")
-        print("    3-Antenna System with Physical Button Control")
-        print("    Modified for toggle mode 12/3/25")
+        print(f"    {self.antenna_count}-Antenna System with Physical Button Control")
         print("=" * 60)
         print()
     
@@ -74,7 +79,10 @@ class AntennaControllerCLI:
         print("  QUIT    - Exit program")
         print()
         print("Physical Button:")
-        print("  Press button to cycle A1 → A2 → A3 → A1")
+        if self.antenna_count == 2:
+            print("  Press button to toggle A1 ↔ A2")
+        else:
+            print("  Press button to cycle A1 → A2 → A3 → A1")
         print("  (Button does not cycle through OFF state)")
         print()
     
@@ -166,8 +174,22 @@ class AntennaControllerCLI:
 
 def main():
     """Entry point"""
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(
+        description='Antenna Controller CLI',
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument(
+        '--mode',
+        type=int,
+        choices=[2, 3],
+        default=3,
+        help='Number of antennas to cycle through with button (default: 3)'
+    )
+    args = parser.parse_args()
+    
     try:
-        cli = AntennaControllerCLI()
+        cli = AntennaControllerCLI(antenna_count=args.mode)
         cli.run()
     except KeyboardInterrupt:
         print("\n\nInterrupted. Exiting...")
