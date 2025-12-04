@@ -58,6 +58,7 @@ class AntennaControllerCLI:
         print("=" * 60)
         print("    ANTENNA CONTROLLER - Interactive CLI")
         print("    3-Antenna System with Physical Button Control")
+        print("    Modified for toggle mode 12/3/25")
         print("=" * 60)
         print()
     
