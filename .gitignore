@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.log
+*.tmp
+*.swp
+*.bak
+*.zip
+.env
+secrets.json
+.DS_Store
