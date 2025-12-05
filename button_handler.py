@@ -2,7 +2,7 @@
 """
 Button Handler - 3 Antenna System
 Handles physical button input with debouncing for antenna cycling
-Debounce: 200ms (optimized for 12mm domed pushbutton)
+Debounce: 20ms now.  Was 200ms which was missing short presses
 """
 
 from gpiozero import Button, Device
@@ -15,15 +15,15 @@ Device.pin_factory = LGPIOFactory()
 class ButtonHandler:
     """Handles physical button control for antenna toggling"""
     
-    def __init__(self, hardware, button_pin=17, debounce_time=0.2, antenna_count=3):
+    def __init__(self, hardware, button_pin=17, debounce_time=0.02, antenna_count=3):
         """
         Initialize button handler with hardware reference
         
         Args:
             hardware: AntennaHardware instance
             button_pin: GPIO pin for button (GPIO 17 = Pin 11)
-            debounce_time: Debounce delay in seconds (0.2s = 200ms)
-                          Optimized for 12mm domed pushbutton
+            debounce_time: Debounce delay in seconds (0.02s = 20ms)
+                          Optimized for short pushes
             antenna_count: Number of antennas to cycle through (2 or 3)
         """
         self.hardware = hardware
