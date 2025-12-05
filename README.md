@@ -1,6 +1,8 @@
-# Antenna Controller for Raspberry Pi Zero 2W
-
+# Antenna Controller for Raspberry Pi Zero 2W 
+December 4, 2025 (Source on SER8 - jcarter/code/scr3)
 3-antenna controller with SSH commands and physical button control.
+
+![0](https://github.com/user-attachments/assets/58b8d155-d3c9-4fb1-aa44-62ef03be9331)
 
 ## Hardware Requirements
 - Raspberry Pi Zero 2W
