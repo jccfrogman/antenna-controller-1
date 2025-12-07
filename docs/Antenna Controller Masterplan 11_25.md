@@ -1,4 +1,5 @@
-# **sPi Zero Antenna Controller Original Masterplan**
+# **
+Pi Zero Antenna Controller Original Masterplan**
 
 Nov 17, 2025
 
